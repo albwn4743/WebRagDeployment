@@ -1,6 +1,8 @@
 import sys
 import gc
+import os
 import asyncio
+from dotenv import load_dotenv
 from urllib.parse import urlparse
 from playwright.async_api import async_playwright, Playwright, Browser
 
