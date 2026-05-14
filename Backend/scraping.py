@@ -11,28 +11,25 @@ _browser_instance: Browser | None = None
 async def _initialize_browser():
     global _playwright_instance, _browser_instance
     _playwright_instance = await async_playwright().start()
-    _browser_instance = await _playwright_instance.chromium.launch(
-        headless=True,
-        args=[
-            "--no-sandbox",
-            "--disable-dev-shm-usage",
-            "--disable-gpu",
-            "--no-zygote",
-            "--disable-extensions",
-            "--disable-background-networking",
-            "--disable-default-apps",
-            "--disable-sync",
-            "--disable-translate",
-            "--hide-scrollbars",
-            "--metrics-recording-only",
-            "--mute-audio",
-            "--no-first-run",
-            "--disable-backgrounding-occluded-windows",
-            "--disable-renderer-backgrounding",
-            "--disable-features=TranslateUI,BlinkGenPropertyTrees",
-            "--js-flags=--max-old-space-size=128",
-        ],
-    )
+    
+    # We will store the API key in Render's Environment Variables
+    BROWSERLESS_TOKEN = os.getenv("BROWSERLESS_TOKEN")
+    
+    if BROWSERLESS_TOKEN:
+        print("[*] Connecting to Stealth Browser API (Browserless)...")
+        # You can add stealth args directly to the websocket URL if needed
+        cdp_url = f"wss://chrome.browserless.io?token={BROWSERLESS_TOKEN}&stealth=true"
+        _browser_instance = await _playwright_instance.chromium.connect_over_cdp(cdp_url)
+    else:
+        print("[!] Warning: No API Token found. Launching local RAM-heavy Chromium...")
+        _browser_instance = await _playwright_instance.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+            ],
+        )
 
 async def get_browser() -> Browser:
     global _browser_instance

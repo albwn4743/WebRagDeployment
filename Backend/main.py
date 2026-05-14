@@ -90,26 +90,34 @@ except Exception as e:
     client = None
 
 # Background Scrape Task
-def background_scrape(url: str, session_id: str):
+# Change from 'def' to 'async def'
+async def background_scrape(url: str, session_id: str):
+    print(f"SCRAPER STARTED for {url}") # Use print or logging
     try:
-        results = asyncio.run(crawl_website(url))
+        # DO NOT use asyncio.run here. Just await.
+        results = await crawl_website(url) 
+        
         if results:
             domain = urlparse(url).netloc
+            # If this is a heavy CPU task, consider wrapping it, 
+            # but for now, keep it simple to test.
             process_and_upload_documents(results, domain)
-            sessions_db[session_id]["status"] = "success"
-            sessions_db[session_id]["url"] = url
-            sessions_db[session_id]["title"] = results[0].get("title", url) if results else url
-            sessions_db[session_id]["pageCount"] = len(results)
-            save_sessions(sessions_db)
+            
+            sessions_db[session_id].update({
+                "status": "success",
+                "url": url,
+                "title": results[0].get("title", url),
+                "pageCount": len(results)
+            })
         else:
             sessions_db[session_id]["status"] = "failed"
             sessions_db[session_id]["error"] = "No documents scraped."
-            save_sessions(sessions_db)
     except Exception as e:
+        print(f"SCRAPER ERROR: {e}")
         sessions_db[session_id]["status"] = "failed"
         sessions_db[session_id]["error"] = str(e)
+    finally:
         save_sessions(sessions_db)
-
 
 def background_panel_scrape(url: str, session_id: str):
     try:
