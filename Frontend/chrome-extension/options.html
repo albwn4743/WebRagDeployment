@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>WebRAG extension settings</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 520px;
+        margin: 24px;
+        line-height: 1.5;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      button {
+        margin-top: 14px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #4f6ef7;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .hint {
+        font-size: 13px;
+        color: #555;
+        margin-top: 8px;
+      }
+      #status {
+        margin-top: 12px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebRAG extension</h1>
+    <p>Where your React app is served (no trailing slash).</p>
+    <label for="origin">Panel app origin</label>
+    <input
+      id="origin"
+      type="text"
+      placeholder="http://localhost:5173"
+      autocomplete="off"
+    />
+    <p class="hint">
+      Dev: run <code>npm run dev</code> in Frontend, then use
+      <code>http://localhost:5173</code>. For a deployed app, use your HTTPS
+      origin and add that host under <code>host_permissions</code> in
+      <code>manifest.json</code> so the iframe is allowed.
+    </p>
+    <button type="button" id="save">Save</button>
+    <p id="status"></p>
+    <script src="options.js"></script>
+  </body>
+</html>

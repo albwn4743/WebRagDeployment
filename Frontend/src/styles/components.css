@@ -1,0 +1,49 @@
+/* ===========================
+   ADDITIONAL COMPONENT STYLES
+=========================== */
+
+/* Suggested questions */
+.suggested-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.suggestion-btn {
+  padding: 6px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.suggestion-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+  background: var(--accent-glow);
+}
+
+.suggestion-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Error bubble */
+.error-bubble {
+  background: var(--error-bg) !important;
+  border-color: rgba(255, 77, 106, 0.2) !important;
+  color: var(--error) !important;
+}
+
+/* Mobile sidebar overlay */
+@media (max-width: 768px) {
+  .sidebar-overlay.visible {
+    display: block;
+  }
+}
