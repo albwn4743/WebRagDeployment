@@ -1,5 +1,4 @@
-from langchain_community.embeddings import HuggingFaceEmbeddings
-
+from langchain_huggingface import HuggingFaceEmbeddings
 # Module-level cache for the embeddings instance to avoid re-loading the model on every request
 _embeddings_cache = None
 import weaviate

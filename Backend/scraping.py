@@ -35,10 +35,11 @@ async def _initialize_browser():
 
 async def get_browser() -> Browser:
     global _browser_instance
-    if _browser_instance is None:
+    # Check if it is None OR if the remote connection was closed
+    if _browser_instance is None or not _browser_instance.is_connected():
+        print("[*] Browser not connected. Initializing new connection...")
         await _initialize_browser()
     return _browser_instance
-
 async def shutdown():
     global _playwright_instance, _browser_instance
     
